@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-
 const filmSchema = new mongoose.Schema({
 	filmType: String,
 	filmProducerName: String,
@@ -14,9 +13,10 @@ const filmSchema = new mongoose.Schema({
 	filmDirectorName: String,
 	address: String,
 	startDate: Date,
-	year: Number,
+	year: Number
 })
 
 const Location = mongoose.model('Location', filmSchema)
 
 module.exports = Location
+
