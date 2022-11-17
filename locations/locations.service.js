@@ -2,28 +2,46 @@
 
 const Location = require('./locations.model')
 
-function findAll () {
-	return Location.find()
+async function findAll() {
+    const location = await Location.find()
+    if (!location) {
+        throw new Error("Not Found");
+    }
+    return location
 }
+
 module.exports.findAll = findAll
 
-function findOne(id) {
-	return Location.findById(id)
+async function findOne(id) {
+    const location = await Location.findById(id)
+    if (!location) {
+        throw new Error("Not Found");
+    }
+    return location
 }
+
 module.exports.findOne = findOne
 
-function deleteId(id) {
-	return Location.findOneAndDelete({_id:id})
+async function deleteId(id) {
+    const result = await Location.deleteOne({_id: id})
+    if (result.deletedCount === 0) {
+        throw new Error("Not Found")
+    }
+    return "Done"
 }
+
 module.exports.deleteId = deleteId
 
-async function addData (data){
-	const location = new Location(data)
-	return await location.save()
+async function addData(data) {
+    const location = new Location(data)
+    return await location.save()
 }
+
 module.exports.addData = addData
 
-function updateLocation(id,location){
-		return Location.updateOne({_id: id}, location)
+async function updateLocation(id, location) {
+    const loc = await Location.findOne(id)
+    return Location.updateOne({_id: id}, location)
 }
+
 module.exports.updateLocation = updateLocation
