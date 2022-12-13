@@ -1,20 +1,20 @@
 const express = require('express')
 const locationController = require('./locations/locations.controller')
-const mongoose = require("mongoose")
-require('dotenv').config()
+const userController = require('./users/users.controller')
 const app = express()
 const port = 3000
-const bodyParser = require("body-parser")
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+const localStrategy = require("./strategies/local.strategy")
+const jwtStrategy = require("./strategies/JWTStrategies")
+require('dotenv').config()
 app.use(bodyParser.json())
 app.use(locationController)
+app.use(userController)
 
 
-
-async function main() {
-	const result = await mongoose.connect(process.env.MONGO_URI)
-	console.log('connected')
-	app.listen(port, () => {
-		console.log(`API listening on port ${port}, visit http://localhost:${port}/`)
-	})
-}
-main()
+app.listen(port, async () => {
+	await mongoose.connect(process.env.MONGO_URI)
+	console.log("Connected")
+	console.log(`API listening on port ${port}, visit http://localhost:${port}/`)
+});
