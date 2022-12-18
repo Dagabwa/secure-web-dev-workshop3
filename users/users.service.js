@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 function findAll(){
     return User.find({}).select("-password")
 }
+module.exports.findAll = findAll
+
 async function addUser(userData) {
     try {
         const hash = await bcrypt.hash(userData.password, 10)
@@ -16,6 +18,8 @@ async function addUser(userData) {
         throw new Error("Username already used")
     }
 }
+module.exports.addUser = addUser
+
 async function checkPassword(username,password){
     const user = await User.findOne({name:username})
     if(!user){
@@ -27,19 +31,23 @@ async function checkPassword(username,password){
     }
     return user
 }
+module.exports.checkPassword = checkPassword
 
 async function generateJWT(username) {
     return jwt.sign({sub:username}, process.env.JWT_SECRET);
 }
+module.exports.generateJWT = generateJWT
 
 async function getUser(id) {
     const user = await User.findOne({_id:id}).select('-password')
     return user
 }
+module.exports.getUser = getUser
 
 async function getUserByName(username) {
     return await User.findOne({name:username});
 }
+module.exports.getUserByName = getUserByName
 
 async function updateUser(username, userData) {
     try {
@@ -47,20 +55,23 @@ async function updateUser(username, userData) {
         await User.findOneAndUpdate({name:username},{...userData, password:hash} );
         return await getUserByName(username);
     } catch (e) {
-        console.log(e)
-        throw new Error("Error when updating")
+        throw new Error("Error update")
     }
 }
+module.exports.updateUser = updateUser
 
 async function deleteUser(username) {
     return await User.findOneAndDelete({name : username});
 }
-
-module.exports.addUser = addUser
-module.exports.findAll = findAll
-module.exports.checkPassword = checkPassword
-module.exports.getUser = getUser
-module.exports.getUserByName = getUserByName
-module.exports.updateUser = updateUser
 module.exports.deleteUser = deleteUser
-module.exports.generateJWT = generateJWT
+
+async function strat (param,f){
+    User.findOne(param,f)
+}
+module.exports.strat = strat
+
+
+
+
+
+
