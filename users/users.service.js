@@ -65,10 +65,10 @@ async function deleteUser(username) {
 }
 module.exports.deleteUser = deleteUser
 
-async function strat (param,f){
-    User.findOne(param,f)
+async function strategyHelper (param,condition){
+    User.findOne(param,condition)
 }
-module.exports.strat = strat
+module.exports.strategyHelper = strategyHelper
 
 
 

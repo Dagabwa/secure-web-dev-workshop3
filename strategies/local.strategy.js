@@ -5,7 +5,7 @@ const {compareSync} = require("bcrypt");
 
 passport.use(new LocalStrategy(
     function (username, password, done){
-        userService.strat({name : username}, function (err,user){
+        userService.strategyHelper({name : username}, function (err,user){
             if(err) return done(err)
             if(!user) {
                 const err = new Error("Not found")
